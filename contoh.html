@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Card Slider</title>
+</head>
+<body>
+
+<div class="slider-container">
+  <div class="slider">
+    <div class="card">
+      <img src="image1.jpg" alt="Image 1">
+      <h3>Title 1</h3>
+      <p>Description 1</p>
+      <button>Learn More</button>
+    </div>
+    <div class="card">
+      <img src="image2.jpg" alt="Image 2">
+      <h3>Title 2</h3>
+      <p>Description 2</p>
+      <button>Learn More</button>
+    </div>
+    <!-- Add more cards as needed -->
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+<style>
+    body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+}
+
+.slider-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+.slider {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.card {
+  min-width: 300px;
+  margin: 0 10px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+h3, p {
+  margin: 10px 0;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+</style>
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+  const slider = document.querySelector('.slider');
+  let isDragging = false;
+  let startPos = 0;
+  let currentTranslate = 0;
+  let prevTranslate = 0;
+
+  slider.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startPos = e.clientX;
+    slider.style.transition = 'none';
+  });
+
+  slider.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const currentPosition = e.clientX;
+    const translate = currentTranslate + currentPosition - startPos;
+    slider.style.transform = `translateX(${translate}px)`;
+  });
+
+  slider.addEventListener('mouseup', () => {
+    isDragging = false;
+    const movedBy = currentTranslate - prevTranslate;
+
+    if (movedBy < -100 && currentTranslate !== -300) {
+      currentTranslate += -300;
+    } else if (movedBy > 100 && currentTranslate !== 0) {
+      currentTranslate += 300;
+    }
+
+    slider.style.transition = 'transform 0.5s ease-in-out';
+    slider.style.transform = `translateX(${currentTranslate}px)`;
+
+    prevTranslate = currentTranslate;
+  });
+
+  slider.addEventListener('mouseleave', () => {
+    isDragging = false;
+    slider.style.transition = 'transform 0.5s ease-in-out';
+    slider.style.transform = `translateX(${prevTranslate}px)`;
+  });
+});
+
+</script>
